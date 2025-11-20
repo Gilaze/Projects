@@ -1,0 +1,9 @@
+At a Hackathon hosted by Anthropic at UC Berkeley, using Claude Code my team and I were able to create a Generative AI media detector that constantly analyzes your screen and checks for an AI generated content.
+
+Using python, it operates continuously in the background using tkinter to remain hidden while running its main event loop and managing temporary pop-up notifications. Its core function resides in a separate, non-blocking thread that periodically captures the user's screen using PIL.ImageGrab.grab(). 
+
+To optimize performance and cost, screenshots are resized and then encoded into a Base64 JPEG string before being sent to Anthropic's Claude API. This visual data is analyzed primarily by the multimodal claude-sonnet-4-5 model, which is prompted to return a strict JSON object detailing the content's potential for being AI-generated or misleading, along with confidence scores and a reason. The application then locally compares these scores against predefined thresholds to determine if an alert should be triggered.
+
+If the initial analysis identifies content as potentially misleading and containing extractable text, the program initiates a swift, secondary fact-checking process in a background thread using the faster claude-haiku-4-5 model to independently verify the claim. Upon crossing the required confidence threshold, an alert is delivered via a highly visible, always-on-top pop-up notification (tk.Toplevel). For misleading content, this notification includes a "Show Context" button, which triggers a tertiary API call (get_context) to provide a detailed, debunking explanation in a new window. All monitoring activity, including checks, detections, and errors, is meticulously logged to both the console and a persistent log file.
+
+This program can be applied to multiple media formats including YouTube videos, YouTube shorts, Instagram Reels, news articles, etc.
