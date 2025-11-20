@@ -1,6 +1,8 @@
-# Python virtual environment
+# Ignore the Python virtual environment folder
 .venv/
 venv/
-# Compiled Python files
+
+# Ignore common Python/Jupyter files
 __pycache__/
 *.pyc
+.ipynb_checkpoints/
